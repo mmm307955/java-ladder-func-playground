@@ -1,20 +1,21 @@
 package controller;
 
 import domain.Ladder;
+import domain.ResultCalculator;
 import view.InputView;
 import view.OutputView;
 
 public class LadderController {
-    private int ladderHeight;
-    private int ladderWidth;
-
     public void run() {
         InputView inputView = new InputView();
-        ladderWidth = inputView.inputLadderWidth();
-        ladderHeight = inputView.inputLadderHeight();
+        int ladderWidth = inputView.inputLadderWidth();
+        int ladderHeight = inputView.inputLadderHeight();
 
         Ladder ladder = Ladder.generate(ladderWidth, ladderHeight);
+        ResultCalculator resultCalculator = new ResultCalculator(ladder);
+
         OutputView outputView = new OutputView();
         outputView.printLadder(ladder);
+        outputView.printResult(ladderWidth, resultCalculator);
     }
 }

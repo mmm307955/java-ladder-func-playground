@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import strategy.FixedPointGenerator;
 
 class LadderTest {
 
@@ -15,9 +16,20 @@ class LadderTest {
         int height = 5;
 
         //When
-        Ladder ladder = Ladder.generate(width,height);
+        Ladder ladder = Ladder.generate(width, height);
 
         //Then
         assertThat(ladder.getLines()).hasSize(height);
+    }
+
+    @Test
+    @DisplayName("라인에서 오른쪽 연결이 있으면 index가 1 증가한다")
+    void index_plus_one_when_line_is_connected_right() {
+        //Given & When
+        Line line = Line.generate(4, new FixedPointGenerator(true));
+        int movedIndex = line.move(0);
+
+        //Then
+        assertThat(movedIndex).isEqualTo(1);
     }
 }

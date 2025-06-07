@@ -22,7 +22,24 @@ public class Ladder {
         return new Ladder(lines);
     }
 
+    // 테스트용 메서드입니다.
+    public static Ladder generate(int width, int height, PointGenerator generator) {
+        List<Line> lines = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            lines.add(Line.generate(width, generator));
+        }
+        return new Ladder(lines);
+    }
+
     public List<Line> getLines() {
         return lines;
+    }
+
+    public int result(int startX) {
+        int x = startX;
+        for (Line line : lines) {
+            x = line.move(x);
+        }
+        return x;
     }
 }

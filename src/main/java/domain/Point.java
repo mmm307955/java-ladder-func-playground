@@ -1,26 +1,24 @@
 package domain;
 
 public class Point {
-    /**
-     * 현재 Point에서 오른쪽으로 선이 연결되어 있는지 여부
-     */
-    private final boolean isRightConnected;
+    private final Direction direction;
 
-    public Point(boolean isRightConnected) {
-        this.isRightConnected = isRightConnected;
+    public Point(Direction direction) {
+        this.direction = direction;
     }
 
-    /**
-     * 다음 Point를 생성한다. 이전 점이 오른쪽으로 연결돼 있으면, 이번 점은 무조건 연결 되지 않는다.
-     */
-    public Point connectNext(boolean canConnectRight) {
-        if (this.isRightConnected) {
-            return new Point(false);
-        }
-        return new Point(canConnectRight);
+    //처음 Point에서는 왼쪽에 이어지지 않으므로 left는 false이다.
+    public static Point first(boolean right) {
+        return new Point(Direction.of(false, right));
     }
 
-    public boolean isRightConnected() {
-        return isRightConnected;
+    public Point next(boolean right) {
+        boolean left = this.direction.isRight();
+        boolean nextRight = !left && right; // 이전 점이 오른쪽으로 연결되지 않았고, 현재 generator가 true면 오른쪽 연결한다.
+        return new Point(Direction.of(left, nextRight));
+    }
+
+    public boolean isMovableToRight() {
+        return direction.isRight();
     }
 }
