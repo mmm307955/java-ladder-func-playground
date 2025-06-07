@@ -13,7 +13,7 @@ public class Ladder {
         this.lines = Collections.unmodifiableList(lines);
     }
 
-    public static Ladder generate(int height, int width) {
+    public static Ladder generate(int width, int height) {
         PointGenerator generator = new RandomGenerator();
         List<Line> lines = new ArrayList<>();
         for (int i = 0; i < height; i++) {

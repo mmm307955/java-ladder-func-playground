@@ -1,14 +1,19 @@
 package controller;
 
 import domain.Ladder;
+import view.InputView;
 import view.OutputView;
 
 public class LadderController {
-    private static final int LADDER_HEIGHT = 4;
-    private static final int LADDER_WIDTH = 3;
+    private int ladderHeight;
+    private int ladderWidth;
 
     public void run() {
-        Ladder ladder = Ladder.generate(LADDER_HEIGHT, LADDER_WIDTH);
+        InputView inputView = new InputView();
+        ladderWidth = inputView.inputLadderWidth();
+        ladderHeight = inputView.inputLadderHeight();
+
+        Ladder ladder = Ladder.generate(ladderWidth, ladderHeight);
         OutputView outputView = new OutputView();
         outputView.printLadder(ladder);
     }

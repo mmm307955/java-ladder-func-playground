@@ -12,16 +12,15 @@ public class Line {
         this.points = Collections.unmodifiableList(points);
     }
 
+    //Point 수는 (width - 1)개가 생성되고, 마지막 Point는 OutputView클래스에서 "|"를 붙여 출력한다
     public static Line generate(int width, PointGenerator generator) {
         List<Point> points = new ArrayList<>();
 
-        //첫 번째 Point
         Point first = new Point(generator.generate());
         points.add(first);
 
-        //두 번째 Point부터 마지막 전 Point까지 가로선 생성
         Point prev = first;
-        for (int i = 1; i < width; i++) {
+        for (int i = 1; i < width - 1; i++) {
             Point next = prev.connectNext(generator.generate());
             points.add(next);
             prev = next;

@@ -15,6 +15,7 @@ public class OutputView {
     private void printLine(Line line) {
         StringBuilder sb = new StringBuilder();
         sb.append("    ");
+
         for (Point point : line.getPoints()) {
             sb.append("|");
             sb.append(displayConnection(point));
