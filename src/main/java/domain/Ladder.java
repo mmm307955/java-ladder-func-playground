@@ -3,8 +3,8 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import strategy.PointGenerator;
-import strategy.RandomGenerator;
+import domain.strategy.PointGenerator;
+import domain.strategy.RandomGenerator;
 
 public class Ladder {
     private final List<Line> lines;

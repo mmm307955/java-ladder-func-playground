@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import strategy.FixedPointGenerator;
-import strategy.PointGenerator;
+import domain.strategy.PointGenerator;
 
 class LineTest {
 

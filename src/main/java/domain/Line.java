@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import strategy.PointGenerator;
+import domain.strategy.PointGenerator;
 
 public class Line {
     private final List<Point> points;
