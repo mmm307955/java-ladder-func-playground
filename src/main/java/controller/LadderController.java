@@ -1,21 +1,80 @@
 package controller;
 
 import domain.Ladder;
+import domain.OperationResult;
+import domain.OperationResults;
+import domain.Participant;
+import domain.Participants;
 import domain.ResultCalculator;
+import java.util.List;
+import java.util.stream.Collectors;
+import util.Parser;
 import view.InputView;
 import view.OutputView;
 
 public class LadderController {
-    public void run() {
-        InputView inputView = new InputView();
-        int ladderWidth = inputView.inputLadderWidth();
-        int ladderHeight = inputView.inputLadderHeight();
+    private final InputView inputView = new InputView();
+    private final OutputView outputView = new OutputView();
 
-        Ladder ladder = Ladder.generate(ladderWidth, ladderHeight);
+    public void run() {
+        Participants participants = inputParticipants();
+        OperationResults operationResults = inputOperationResults(participants);
+
+        Ladder ladder = createLadder(participants.size());
         ResultCalculator resultCalculator = new ResultCalculator(ladder);
 
-        OutputView outputView = new OutputView();
-        outputView.printLadder(ladder);
-        outputView.printResult(ladderWidth, resultCalculator);
+        outputView.printLadderResult(ladder, participants, operationResults);
+        showLadderGameResult(participants, operationResults, resultCalculator);
+    }
+
+    private Participants inputParticipants() {
+        String input = inputView.inputParticipantsNames();
+        List<String> names = Parser.parseCommaSeparatedValues(input);
+        List<Participant> participantList = names.stream()
+            .map(Participant::new)
+            .collect(Collectors.toList());
+        return new Participants(participantList);
+    }
+
+    private OperationResults inputOperationResults(Participants participants) {
+        String input = inputView.inputOperationResults();
+        List<String> operationResults = Parser.parseCommaSeparatedValues(input);
+        List<OperationResult> operationResultList = operationResults.stream()
+            .map(OperationResult::new)
+            .collect(Collectors.toList());
+        return new OperationResults(operationResultList, participants);
+    }
+
+    private Ladder createLadder(int width) {
+        int ladderWidth = width;
+        int ladderHeight = inputView.inputLadderHeight();
+        return Ladder.generate(ladderWidth, ladderHeight);
+    }
+
+    private void showLadderGameResult(Participants participants, OperationResults operationResults,
+        ResultCalculator resultCalculator) {
+        while (true) {
+            String name = inputView.inputResultParticipant();
+            boolean canExit = handleResultRequest(name, participants, operationResults,
+                resultCalculator);
+            if (canExit) {
+                break;
+            }
+        }
+    }
+
+    private boolean handleResultRequest(String name, Participants participants,
+        OperationResults operationResults, ResultCalculator resultCalculator) {
+        if (name.equals("all")) {
+            outputView.printAllResults(participants, operationResults, resultCalculator);
+            return true;
+        }
+        int index = participants.indexOf(name);
+        if (index == -1) {
+            System.out.println("해당 이름은 참가자 목록에 없습니다. 다시 입력해주세요.");
+            return false;
+        }
+        outputView.printResultByName(operationResults, resultCalculator, index);
+        return false;
     }
 }

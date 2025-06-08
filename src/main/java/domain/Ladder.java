@@ -13,6 +13,7 @@ public class Ladder {
         this.lines = Collections.unmodifiableList(lines);
     }
 
+    // 실제 사용 메서드입니다.
     public static Ladder generate(int width, int height) {
         PointGenerator generator = new RandomGenerator();
         List<Line> lines = new ArrayList<>();
