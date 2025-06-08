@@ -66,6 +66,7 @@ public class LadderController {
     private boolean handleResultRequest(String name, Participants participants,
         OperationResults operationResults, ResultCalculator resultCalculator) {
         if (name.equals("all")) {
+
             outputView.printAllResults(participants, operationResults, resultCalculator);
             return true;
         }
