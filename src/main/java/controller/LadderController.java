@@ -6,6 +6,7 @@ import domain.OperationResults;
 import domain.Participant;
 import domain.Participants;
 import domain.ResultCalculator;
+import domain.strategy.RandomPointGenerator;
 import java.util.List;
 import java.util.stream.Collectors;
 import util.Parser;
@@ -28,8 +29,7 @@ public class LadderController {
     }
 
     private Participants inputParticipants() {
-        String input = inputView.inputParticipantsNames();
-        List<String> names = Parser.parseCommaSeparatedValues(input);
+        List<String> names = inputView.inputParticipantsNames();
         List<Participant> participantList = names.stream()
             .map(Participant::new)
             .collect(Collectors.toList());
@@ -38,7 +38,7 @@ public class LadderController {
 
     private OperationResults inputOperationResults(Participants participants) {
         String input = inputView.inputOperationResults();
-        List<String> operationResults = Parser.parseCommaSeparatedValues(input);
+        List<String> operationResults = Parser.parseCommaSeparated(input);
         List<OperationResult> operationResultList = operationResults.stream()
             .map(OperationResult::new)
             .collect(Collectors.toList());
@@ -46,9 +46,8 @@ public class LadderController {
     }
 
     private Ladder createLadder(int width) {
-        int ladderWidth = width;
         int ladderHeight = inputView.inputLadderHeight();
-        return Ladder.generate(ladderWidth, ladderHeight);
+        return Ladder.generate(width, ladderHeight, new RandomPointGenerator());
     }
 
     private void showLadderGameResult(Participants participants, OperationResults operationResults,

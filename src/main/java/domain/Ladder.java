@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import domain.strategy.PointGenerator;
-import domain.strategy.RandomGenerator;
 
 public class Ladder {
     private final List<Line> lines;
@@ -13,17 +12,6 @@ public class Ladder {
         this.lines = Collections.unmodifiableList(lines);
     }
 
-    // 실제 사용 메서드입니다.
-    public static Ladder generate(int width, int height) {
-        PointGenerator generator = new RandomGenerator();
-        List<Line> lines = new ArrayList<>();
-        for (int i = 0; i < height; i++) {
-            lines.add(Line.generate(width, generator));
-        }
-        return new Ladder(lines);
-    }
-
-    // 테스트용 메서드입니다.
     public static Ladder generate(int width, int height, PointGenerator generator) {
         List<Line> lines = new ArrayList<>();
         for (int i = 0; i < height; i++) {

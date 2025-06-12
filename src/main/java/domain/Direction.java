@@ -1,15 +1,9 @@
 package domain;
 
 public enum Direction {
-    LEFT(-1),
-    RIGHT(1),
-    DOWN(0);
-
-    private final int move;
-
-    Direction(int move) {
-        this.move = move;
-    }
+    LEFT,
+    RIGHT,
+    DOWN;
 
     public static Direction of(boolean left, boolean right) {
         if (left) {

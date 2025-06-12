@@ -16,7 +16,7 @@ class LadderTest {
         int height = 5;
 
         //When
-        Ladder ladder = Ladder.generate(width, height);
+        Ladder ladder = Ladder.generate(width, height, new FixedPointGenerator(true));
 
         //Then
         assertThat(ladder.getLines()).hasSize(height);

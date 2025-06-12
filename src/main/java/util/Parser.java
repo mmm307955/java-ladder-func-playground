@@ -10,7 +10,7 @@ public final class Parser {
         throw new AssertionError("Parser 클래스는 인스턴스화 할 수 없습니다.");
     }
 
-    public static List<String> parseCommaSeparatedValues(String input) {
+    public static List<String> parseCommaSeparated(String input) {
         return Arrays.stream(input.split(","))
             .map(String::strip)
             .collect(Collectors.toList());

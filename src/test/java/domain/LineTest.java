@@ -35,7 +35,7 @@ class LineTest {
         int height = 5;
 
         //When
-        Ladder ladder = Ladder.generate(width, height);
+        Ladder ladder = Ladder.generate(width, height, new FixedPointGenerator(true));
         List<Line> lines = ladder.getLines();
 
         //Then
