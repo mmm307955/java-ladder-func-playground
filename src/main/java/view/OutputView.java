@@ -1,25 +1,22 @@
 package view;
 
 import domain.Ladder;
+import domain.LadderResult;
 import domain.Line;
-import domain.OperationResult;
-import domain.OperationResults;
+import domain.Participant;
 import domain.Participants;
 import domain.Point;
-import domain.ResultCalculator;
+import domain.Results;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class OutputView {
-    public void printLadderResult(Ladder ladder, Participants participants,
-        OperationResults operationResults) {
+    public void printLadder(Ladder ladder, Participants participants) {
         System.out.println("\n사다리 결과\n");
         printParticipantsNames(participants.names());
         for (Line line : ladder.getLines()) {
             printLine(line);
         }
-        printOperationResults(operationResults.getOperationResults());
     }
 
     private void printLine(Line line) {
@@ -48,33 +45,32 @@ public class OutputView {
     }
 
     public void printParticipantsNames(List<String> names) {
-        StringBuilder sb = new StringBuilder("  ");
+        StringBuilder sb = new StringBuilder("   ");
         for (String name : names) {
             sb.append(String.format("%-6s", name));
         }
         System.out.println(sb);
     }
 
-    public void printOperationResults(List<OperationResult> results) {
-        String result = results.stream()
-            .map(r -> String.format("%-6s", r.getValue()))
-            .collect(Collectors.joining());
-        System.out.println("   " + result);
+    public void printAllResults(Results results) {
+        System.out.print("  ");
+        String allResults = results.getResults().stream()
+            .map(result -> String.format("%-5s", result.getResult()))
+            .collect(Collectors.joining(" "));
+        System.out.println(" " + allResults);
     }
 
-    public void printAllResults(Participants participants, OperationResults operationResults,
-        ResultCalculator resultCalculator) {
+    public void printResultForAllParticipants(LadderResult ladderResult,
+        Participants participants) {
         System.out.println("실행 결과");
-        IntStream.range(0, participants.size())
-            .mapToObj(i -> participants.get(i).getName() + " : " + operationResults.get(
-                resultCalculator.calculateResult(i)).getValue())
+        participants.getAll().stream()
+            .map(participant -> participant.getName() + " : " +
+                ladderResult.getResult(participant).getResult())
             .forEach(System.out::println);
     }
 
-    public void printResultByName(OperationResults operationResults,
-        ResultCalculator resultCalculator, int index) {
-        String result = operationResults.get(resultCalculator.calculateResult(index)).getValue();
-        System.out.println("실행결과");
-        System.out.println(result);
+    public void printResultForParticipant(LadderResult ladderResult, Participant participant) {
+        System.out.println("결과를 보고 싶은 사람은?");
+        System.out.println(ladderResult.getResult(participant).getResult());
     }
 }

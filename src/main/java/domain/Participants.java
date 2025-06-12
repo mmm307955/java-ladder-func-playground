@@ -15,8 +15,12 @@ public class Participants {
         return participants.size();
     }
 
-    public Participant get(int index) {
+    public Participant findByIndex(int index) {
         return participants.get(index);
+    }
+
+    public List<Participant> getAll() {
+        return participants;
     }
 
     public List<String> names() {
@@ -25,7 +29,7 @@ public class Participants {
             .toList();
     }
 
-    public int indexOf(String name) {
+    public int findIndexByName(String name) {
         return IntStream.range(0, participants.size())
             .filter(i -> isMatchingName(name, i))
             .findFirst()

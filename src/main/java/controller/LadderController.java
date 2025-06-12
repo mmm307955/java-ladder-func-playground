@@ -1,13 +1,16 @@
 package controller;
 
 import domain.Ladder;
-import domain.OperationResult;
-import domain.OperationResults;
+import domain.LadderFactory;
+import domain.LadderResult;
+import domain.LoopControl;
 import domain.Participant;
 import domain.Participants;
-import domain.ResultCalculator;
+import domain.Result;
+import domain.Results;
 import domain.strategy.RandomPointGenerator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import util.Parser;
 import view.InputView;
@@ -19,13 +22,15 @@ public class LadderController {
 
     public void run() {
         Participants participants = inputParticipants();
-        OperationResults operationResults = inputOperationResults(participants);
-
+        Results results = inputResults(participants);
         Ladder ladder = createLadder(participants.size());
-        ResultCalculator resultCalculator = new ResultCalculator(ladder);
 
-        outputView.printLadderResult(ladder, participants, operationResults);
-        showLadderGameResult(participants, operationResults, resultCalculator);
+        LadderResult ladderResult = ladder.calculateResult(participants, results);
+
+        outputView.printLadder(ladder, participants);
+        outputView.printAllResults(results);
+
+        showLadderGameResult(participants, ladderResult);
     }
 
     private Participants inputParticipants() {
@@ -36,45 +41,51 @@ public class LadderController {
         return new Participants(participantList);
     }
 
-    private OperationResults inputOperationResults(Participants participants) {
+    private Results inputResults(Participants participants) {
         String input = inputView.inputOperationResults();
         List<String> operationResults = Parser.parseCommaSeparated(input);
-        List<OperationResult> operationResultList = operationResults.stream()
-            .map(OperationResult::new)
+        List<Result> resultList = operationResults.stream()
+            .map(Result::new)
             .collect(Collectors.toList());
-        return new OperationResults(operationResultList, participants);
+        return new Results(resultList, participants);
     }
 
     private Ladder createLadder(int width) {
-        int ladderHeight = inputView.inputLadderHeight();
-        return Ladder.generate(width, ladderHeight, new RandomPointGenerator());
+        int height = inputView.inputLadderHeight();
+        return LadderFactory.create(width, height, new RandomPointGenerator());
     }
 
-    private void showLadderGameResult(Participants participants, OperationResults operationResults,
-        ResultCalculator resultCalculator) {
-        while (true) {
+    private void showLadderGameResult(Participants participants, LadderResult ladderResult) {
+        repeat(() -> {
             String name = inputView.inputResultParticipant();
-            boolean canExit = handleResultRequest(name, participants, operationResults,
-                resultCalculator);
-            if (canExit) {
-                break;
-            }
+            return loopControl(name, participants, ladderResult);
+        });
+    }
+
+    private void repeat(Supplier<LoopControl> supplier) {
+        while (supplier.get() != LoopControl.EXIT) {
+
         }
     }
 
-    private boolean handleResultRequest(String name, Participants participants,
-        OperationResults operationResults, ResultCalculator resultCalculator) {
+    private LoopControl loopControl(String name, Participants participants,
+        LadderResult ladderResult) {
         if (name.equals("all")) {
-
-            outputView.printAllResults(participants, operationResults, resultCalculator);
-            return true;
+            outputView.printResultForAllParticipants(ladderResult, participants);
+            return LoopControl.EXIT;
         }
-        int index = participants.indexOf(name);
+        return individualResult(name, participants, ladderResult);
+    }
+
+    private LoopControl individualResult(String name, Participants participants,
+        LadderResult ladderResult) {
+        int index = participants.findIndexByName(name);
         if (index == -1) {
             System.out.println("해당 이름은 참가자 목록에 없습니다. 다시 입력해주세요.");
-            return false;
+            return LoopControl.CONTINUE;
         }
-        outputView.printResultByName(operationResults, resultCalculator, index);
-        return false;
+        Participant participant = participants.findByIndex(index);
+        outputView.printResultForParticipant(ladderResult, participant);
+        return LoopControl.CONTINUE;
     }
 }

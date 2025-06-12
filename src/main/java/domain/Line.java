@@ -1,14 +1,17 @@
 package domain;
 
+import domain.strategy.PointGenerator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import domain.strategy.PointGenerator;
 
 public class Line {
     private final List<Point> points;
 
     private Line(List<Point> points) {
+        if (points == null || points.isEmpty()) {
+            throw new IllegalArgumentException("Point 목록은 비어 있을 수 없습니다.");
+        }
         this.points = Collections.unmodifiableList(points);
     }
 
