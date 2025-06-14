@@ -49,7 +49,8 @@ class LadderTest {
             new Result("오렌지")
         ), participants);
 
-        Ladder ladder = LadderFactory.create(width, height, new FixedPointGenerator(true));
+        LadderGenerator ladderGenerator = new LadderGenerator(width, height);
+        Ladder ladder = ladderGenerator.create(new FixedPointGenerator(true));
 
         // When
         LadderResult ladderResult = ladder.calculateResult(participants, results);
@@ -69,7 +70,8 @@ class LadderTest {
         int height = 5;
 
         //When
-        Ladder ladder = LadderFactory.create(width, height, new FixedPointGenerator(true));
+        LadderGenerator ladderGenerator = new LadderGenerator(width, height);
+        Ladder ladder = ladderGenerator.create(new FixedPointGenerator(true));
 
         //Then
         assertThat(ladder.getLines()).hasSize(height);

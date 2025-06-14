@@ -17,6 +17,13 @@ public class LadderResult {
         return participantToResult.get(participant);
     }
 
+    public Participant findParticipantByName(String name) {
+        return participantToResult.keySet().stream()
+            .filter(participant -> participant.getName().equals(name))
+            .findFirst()
+            .orElse(null);
+    }
+
     public Map<Participant, Result> getAll() {
         return participantToResult;
     }

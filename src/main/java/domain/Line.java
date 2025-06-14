@@ -8,7 +8,7 @@ import java.util.List;
 public class Line {
     private final List<Point> points;
 
-    private Line(List<Point> points) {
+    public Line(List<Point> points) {
         if (points == null || points.isEmpty()) {
             throw new IllegalArgumentException("Point 목록은 비어 있을 수 없습니다.");
         }

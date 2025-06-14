@@ -1,4 +1,4 @@
-package domain;
+package controller;
 
 public enum LoopControl {
     CONTINUE,

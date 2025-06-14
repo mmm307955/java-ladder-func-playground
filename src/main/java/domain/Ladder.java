@@ -31,7 +31,7 @@ public class Ladder {
         return new LadderResult(resultByParticipant);
     }
 
-    public int calculatePosition(int startIndex) {
+    private int calculatePosition(int startIndex) {
         int index = startIndex;
         for (Line line : lines) {
             index = line.move(index);

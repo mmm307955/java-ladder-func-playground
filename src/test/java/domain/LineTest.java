@@ -46,7 +46,8 @@ class LineTest {
         int height = 5;
 
         //When
-        Ladder ladder = LadderFactory.create(width, height, new FixedPointGenerator(true));
+        LadderGenerator ladderGenerator = new LadderGenerator(width, height);
+        Ladder ladder = ladderGenerator.create(new FixedPointGenerator(true));
 
         List<Line> lines = ladder.getLines();
 

@@ -60,13 +60,11 @@ public class OutputView {
         System.out.println(" " + allResults);
     }
 
-    public void printResultForAllParticipants(LadderResult ladderResult,
-        Participants participants) {
+    public void printResultForAllParticipants(LadderResult ladderResult) {
         System.out.println("실행 결과");
-        participants.getAll().stream()
-            .map(participant -> participant.getName() + " : " +
-                ladderResult.getResult(participant).getResult())
-            .forEach(System.out::println);
+        ladderResult.getAll().forEach((participant, result) -> {
+            System.out.println(participant.getName() + " : " + result.getResult());
+        });
     }
 
     public void printResultForParticipant(LadderResult ladderResult, Participant participant) {
